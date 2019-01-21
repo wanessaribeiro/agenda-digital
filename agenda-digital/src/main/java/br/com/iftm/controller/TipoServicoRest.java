@@ -72,9 +72,10 @@ public class TipoServicoRest {
 		for (int i=0; i < lista.size(); i++) {
 			if(lista.get(i).getCodigo().equals(tipoServico.getCodigo())){
 				lista.remove(i);
+				break;
 			}
 		}
 		
-		return ResponseEntity.ok(tipoServico);
+		return ResponseEntity.ok().build();
 	}
 }
