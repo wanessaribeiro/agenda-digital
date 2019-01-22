@@ -1,7 +1,10 @@
 package br.com.iftm.controller;
 
+import java.util.List;
+
 import javax.websocket.server.PathParam;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,7 @@ import br.com.iftm.entity.TipoServico;
 @RequestMapping(value = "/tiposervico") // Nome do serviço
 public class TipoServicoRest {
 
+	@Autowired
 	private TipoServicoBusiness business;
 
 	// Create
@@ -29,6 +33,9 @@ public class TipoServicoRest {
 			tipoServico = business.create(tipoServico);
 			return ResponseEntity.ok(tipoServico);
 		} catch (BusinessException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e);
 		}
@@ -48,8 +55,18 @@ public class TipoServicoRest {
 	@GetMapping("/filtro/nome")
 	public ResponseEntity<?> readByName(@PathParam("nome") String nome) {
 		try {
-			return ResponseEntity.ok(business.readByName(nome));
+			List<TipoServico> temp = business.readByName(nome);
+
+			if (temp.isEmpty()) {
+				return ResponseEntity.notFound().build();
+			} else {
+				return ResponseEntity.ok(temp);
+			}
+
 		} catch (BusinessException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e);
 		}
@@ -63,6 +80,9 @@ public class TipoServicoRest {
 		} catch (BusinessException e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e);
 		}
 	}
 
@@ -73,6 +93,9 @@ public class TipoServicoRest {
 			business.delete(id);
 			return ResponseEntity.ok().build();
 		} catch (BusinessException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e);
 		}
