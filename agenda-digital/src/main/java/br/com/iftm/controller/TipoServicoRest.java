@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +45,24 @@ public class TipoServicoRest {
 		return ResponseEntity.ok(lista);
 	}
 	
+	@GetMapping("/filtro/nome")
+	public ResponseEntity<?> readByName(@PathParam("nome") String nome){
+		if(StringUtils.isEmpty(nome)) {
+			return ResponseEntity.badRequest().body("Nome Requerido!");
+		}
+		
+		List<TipoServico> temp = new ArrayList<>();
+		
+		for (TipoServico tipoServico : lista) {
+			if(tipoServico.getNome().toLowerCase().contains(nome.toLowerCase())) {
+				temp.add(tipoServico);
+			}
+		}
+		
+		return ResponseEntity.ok(temp);
+	}
+	
+	
 	// Update
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody TipoServico tipoServico){
@@ -63,14 +84,14 @@ public class TipoServicoRest {
 	}
 	
 	// Delete
-	@DeleteMapping
-	public ResponseEntity<?> delete(@RequestBody TipoServico tipoServico){
-		if(tipoServico.getCodigo() == null) {
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<?> delete(@PathVariable("id") Integer id){
+		if(id == null) {
 			return ResponseEntity.badRequest().body("Codigo Requerido!");
 		}
 		
 		for (int i=0; i < lista.size(); i++) {
-			if(lista.get(i).getCodigo().equals(tipoServico.getCodigo())){
+			if(lista.get(i).getCodigo().equals(id)){
 				lista.remove(i);
 				break;
 			}
