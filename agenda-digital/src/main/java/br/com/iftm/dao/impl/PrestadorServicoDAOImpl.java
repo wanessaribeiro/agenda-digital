@@ -41,6 +41,7 @@ public class PrestadorServicoDAOImpl implements PrestadorServicoDAO {
 				preSer2.setTelefones(preSer.getTelefones());
 				preSer2.setTipoLogradouro(preSer.getTipoLogradouro());
 				preSer2.setTipoServicos(preSer.getTipoServicos());
+				break;
 			}
 		}
 

@@ -11,6 +11,7 @@ import br.com.iftm.business.PrestadorServicoBusiness;
 import br.com.iftm.dao.PrestadorServicoDAO;
 import br.com.iftm.entity.PrestadorServico;
 import br.com.iftm.entity.Telefone;
+import br.com.iftm.entity.TipoServico;
 
 @Service
 public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
@@ -50,8 +51,22 @@ public class PrestadorServicoBusinessImpl implements PrestadorServicoBusiness {
 		}
 
 		for (Telefone t : preSer.getTelefones()) {
-			if (t.getDdd() == null || t.getNumero() == null) {
-				throw new BusinessException("Telefone invalido.");
+			if (t.getDdd() == null) {
+				throw new BusinessException("DDD invalido.");
+			}
+
+			if (t.getNumero() == null) {
+				throw new BusinessException("Numero invalido.");
+			}
+		}
+
+		if (preSer.getTipoServicos() == null || preSer.getTipoServicos().isEmpty()) {
+			throw new BusinessException("Tipos de servico invalido.");
+		}
+
+		for (TipoServico t : preSer.getTipoServicos()) {
+			if (t.getCodigo() == null) {
+				throw new BusinessException("Codigo do tipo de servico invalido.");
 			}
 		}
 
