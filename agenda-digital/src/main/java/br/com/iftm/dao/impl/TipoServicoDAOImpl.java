@@ -10,7 +10,7 @@ import br.com.iftm.entity.TipoServico;
 
 @Repository
 public class TipoServicoDAOImpl implements TipoServicoDAO {
-	private int indice = 0;
+	private int indice = 1;
 	private List<TipoServico> lista = new ArrayList<TipoServico>();
 
 	@Override
